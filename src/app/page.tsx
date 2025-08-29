@@ -1,103 +1,150 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { CategoryCard } from '@/components/CategoryCard';
+import { SearchBar } from '@/components/SearchBar';
+import { TechTimeline } from '@/components/TechTimeline';
 
-export default function Home() {
+const categories = [
+  {
+    id: 'react-nextjs',
+    title: 'React & Next.js',
+    icon: '⚛️',
+    description: 'Tutorials, deep-dives, performance hacks',
+    color: 'blue',
+    postCount: 12,
+    gradient: 'from-blue-500 to-cyan-500'
+  },
+  {
+    id: 'artificial-intelligence',
+    title: 'Artificial Intelligence',
+    icon: '🤖',
+    description: 'AI tools, ML concepts, LLMs, prompt engineering',
+    color: 'purple',
+    postCount: 8,
+    gradient: 'from-purple-500 to-pink-500'
+  },
+  {
+    id: 'cloud-devops',
+    title: 'Cloud & DevOps',
+    icon: '☁️',
+    description: 'AWS, GCP, CI/CD, scalable apps',
+    color: 'green',
+    postCount: 15,
+    gradient: 'from-green-500 to-emerald-500'
+  },
+  {
+    id: 'emerging-tech',
+    title: 'Emerging Tech',
+    icon: '🔮',
+    description: 'Web3, AR/VR, Quantum Computing, Edge Tech',
+    color: 'pink',
+    postCount: 6,
+    gradient: 'from-pink-500 to-rose-500'
+  },
+  {
+    id: 'developer-tools',
+    title: 'Developer Tools',
+    icon: '🛠️',
+    description: 'VS Code setups, Git tips, workflows',
+    color: 'orange',
+    postCount: 10,
+    gradient: 'from-orange-500 to-yellow-500'
+  }
+];
+
+export default function HomePage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,212,255,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(139,92,246,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(236,72,153,0.1),transparent_50%)]" />
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Header */}
+      <header className="relative z-10 pt-8 pb-16 text-center">
+        <div className="container mx-auto px-4">
+          <h1 className="text-6xl md:text-8xl font-bold mb-6">
+            <span className="gradient-text">Tech Talks</span>
+            <br />
+            <span className="text-white">with Omee</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            Exploring the Future of Technology
+          </p>
+          <div className="text-3xl md:text-4xl font-mono text-cyan-400 mb-8 animate-pulse-glow">
+            Decode. Build. Evolve. With Omee.
+          </div>
+          
+          {/* AI Search Bar */}
+          <div className="max-w-2xl mx-auto mb-12">
+            <SearchBar />
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="relative z-10 pb-20">
+        <div className="container mx-auto px-4">
+          {/* Categories Grid */}
+          <section className="mb-20">
+            <h2 className="text-4xl font-bold text-center mb-16 gradient-text">
+              Explore Tech Categories
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+              {categories.map((category) => (
+                <CategoryCard key={category.id} category={category} />
+              ))}
+            </div>
+          </section>
+
+          {/* Tech Timeline */}
+          <section className="mb-20">
+            <h2 className="text-4xl font-bold text-center mb-16 gradient-text">
+              Tech Evolution Timeline
+            </h2>
+            <TechTimeline />
+          </section>
+
+          {/* Newsletter Signup */}
+          <section className="text-center">
+            <div className="max-w-2xl mx-auto p-8 rounded-2xl bg-gradient-to-r from-gray-900 to-gray-800 border border-gray-700">
+              <h3 className="text-2xl font-bold mb-4 text-white">
+                Stay Updated with Tech Trends
+              </h3>
+              <p className="text-gray-300 mb-6">
+                Get the latest insights on emerging technologies delivered to your inbox
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="flex-1 px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                />
+                <button className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105">
+                  Subscribe
+                </button>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-cyan-400 rounded-full animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 6}s`,
+              animationDuration: `${6 + Math.random() * 4}s`
+            }}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        ))}
+      </div>
     </div>
   );
 }
