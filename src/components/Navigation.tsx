@@ -3,23 +3,27 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Home, User, BookOpen, Briefcase, Bookmark, Mail } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { LoginModal } from './LoginModal';
+import { Menu, X, Home, User, BookOpen, Briefcase, Bookmark, Mail, LogIn, LogOut, Settings } from 'lucide-react';
 
 const navigationItems = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'About', href: '/about', icon: User },
   { name: 'Blog', href: '/blog', icon: BookOpen },
-  { name: 'Projects', href: '/projects', icon: Briefcase },
-  { name: 'Resources', href: '/resources', icon: Bookmark },
-  { name: 'Newsletter', href: '/newsletter', icon: Mail },
+  // { name: 'Projects', href: '/projects', icon: Briefcase },
+  // { name: 'Resources', href: '/resources', icon: Bookmark },
+  // { name: 'Newsletter', href: '/newsletter', icon: Mail },
 ];
 
 export function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const pathname = usePathname();
+  const { user, signOut } = useAuth();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-gray-800/50">
+    <nav className="fixed top-0 left-0 right-0 z-40 bg-black/80 backdrop-blur-md border-b border-gray-800/50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -27,7 +31,7 @@ export function Navigation() {
             <div className="w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <span className="text-white font-bold text-lg">🌀</span>
             </div>
-            <span className="text-xl font-bold gradient-text">Tech Talks</span>
+            <span className="text-xl font-bold gradient-text">Tech Talks with Omee</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -53,6 +57,42 @@ export function Navigation() {
                 </Link>
               );
             })}
+            
+            {/* Admin Link for logged in users */}
+            {user && (
+              <Link
+                href="/admin/blog"
+                className="relative px-4 py-2 rounded-lg font-medium transition-all duration-300 text-gray-300 hover:text-white hover:bg-gray-800/50"
+              >
+                Admin
+              </Link>
+            )}
+          </div>
+
+          {/* Auth Buttons */}
+          <div className="hidden md:flex items-center gap-2">
+            {user ? (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-300 px-3 py-1 bg-gray-800/50 rounded-lg border border-gray-600/50">
+                  {user.email}
+                </span>
+                <button
+                  onClick={() => signOut()}
+                  className="p-2 text-gray-300 hover:text-white hover:bg-gray-800/50 rounded-lg transition-colors duration-200"
+                  title="Sign Out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all duration-200"
+              >
+                <LogIn className="w-4 h-4 inline mr-2" />
+                Sign In
+              </button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -89,10 +129,60 @@ export function Navigation() {
                   </Link>
                 );
               })}
+              
+              {/* Admin Link for logged in users */}
+              {user && (
+                <Link
+                  href="/admin/blog"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 text-gray-300 hover:text-white hover:bg-gray-800/50"
+                >
+                  <Settings className="w-5 h-5" />
+                  Admin
+                </Link>
+              )}
+              
+              {/* Auth Section */}
+              <div className="border-t border-gray-700/50 pt-4">
+                {user ? (
+                  <div className="space-y-2">
+                    <div className="px-4 py-2 text-sm text-gray-400">
+                      Signed in as: {user.email}
+                    </div>
+                    <button
+                      onClick={() => {
+                        signOut();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 text-gray-300 hover:text-white hover:bg-gray-800/50"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsLoginModalOpen(true);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all duration-200 bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
+                  >
+                    <LogIn className="w-5 h-5" />
+                    Sign In
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         )}
       </div>
+      
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)} 
+      />
     </nav>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { memo, useState, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 
 interface Category {
@@ -17,15 +17,15 @@ interface CategoryCardProps {
   category: Category;
 }
 
-export function CategoryCard({ category }: CategoryCardProps) {
+export const CategoryCard = memo(function CategoryCard({ category }: CategoryCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
-  const getColorClasses = (color: string) => {
+  const getColorClasses = useCallback((color: string) => {
     switch (color) {
       case 'blue':
         return 'hover:glow-blue border-cyan-400/30 hover:border-cyan-400';
       case 'purple':
-        return 'hover:glow-purple border-purple-400/30 hover:border-purple-400';
+        return 'hover:glow-blue border-purple-400/30 hover:border-purple-400';
       case 'green':
         return 'hover:glow-green border-green-400/30 hover:border-green-400';
       case 'pink':
@@ -35,18 +35,21 @@ export function CategoryCard({ category }: CategoryCardProps) {
       default:
         return 'hover:glow-blue border-cyan-400/30 hover:border-cyan-400';
     }
-  };
+  }, []);
 
-  const getGradientClasses = (gradient: string) => {
+  const getGradientClasses = useCallback((gradient: string) => {
     return `bg-gradient-to-br ${gradient}`;
-  };
+  }, []);
+
+  const colorClasses = useMemo(() => getColorClasses(category.color), [category.color, getColorClasses]);
+  const gradientClasses = useMemo(() => getGradientClasses(category.gradient), [category.gradient, getGradientClasses]);
 
   return (
     <Link href={`/category/${category.id}`}>
       <div
         className={`
           relative group cursor-pointer transition-all duration-500 transform hover:scale-105
-          rounded-2xl p-6 border-2 ${getColorClasses(category.color)}
+          rounded-2xl p-6 border-2 ${colorClasses}
           bg-gray-900/50 backdrop-blur-sm hover:bg-gray-800/70
           overflow-hidden
         `}
@@ -56,7 +59,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
         {/* Background gradient overlay */}
         <div className={`
           absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500
-          ${getGradientClasses(category.gradient)}
+          ${gradientClasses}
         `} />
         
         {/* Icon */}
@@ -87,7 +90,7 @@ export function CategoryCard({ category }: CategoryCardProps) {
 
         {/* Glow effect */}
         <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-          <div className={`absolute inset-0 rounded-2xl ${getGradientClasses(category.gradient)} blur-xl opacity-20`} />
+          <div className={`absolute inset-0 rounded-2xl ${gradientClasses} blur-xl opacity-20`} />
         </div>
 
         {/* Corner accents */}
@@ -98,4 +101,4 @@ export function CategoryCard({ category }: CategoryCardProps) {
       </div>
     </Link>
   );
-}
+});

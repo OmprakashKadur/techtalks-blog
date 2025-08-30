@@ -1,36 +1,34 @@
-import { Calendar, Code, Rocket, Lightbulb, Globe, Zap } from 'lucide-react';
+'use client';
+
+import { Calendar, Code, Rocket, Lightbulb, Globe, Zap, BookOpen, ArrowRight, Clock } from 'lucide-react';
+import { useBlogs } from '@/hooks/useBlogs';
+import Link from 'next/link';
 
 const journeyMilestones = [
   {
-    year: '2020',
+    year: '2022',
     title: 'The Beginning',
     description: 'Started as a curious beginner, fascinated by the endless possibilities of technology. First lines of code written in HTML and CSS.',
     icon: Code,
     color: 'blue'
   },
   {
-    year: '2021',
+    year: '2023',
     title: 'Frontend Discovery',
     description: 'Dived deep into JavaScript and React. Built first interactive web applications and discovered the joy of creating user experiences.',
     icon: Rocket,
     color: 'purple'
   },
+
   {
-    year: '2022',
-    title: 'Full-Stack Evolution',
-    description: 'Expanded horizons to include backend development, databases, and cloud services. Started building complete applications.',
-    icon: Lightbulb,
-    color: 'green'
-  },
-  {
-    year: '2023',
+    year: '2024',
     title: 'AI & Emerging Tech',
     description: 'Began exploring artificial intelligence, machine learning, and cutting-edge technologies. Started integrating AI into applications.',
     icon: Zap,
     color: 'pink'
   },
   {
-    year: '2024',
+    year: '2025',
     title: 'Tech Explorer',
     description: 'Now exploring the frontiers of technology - Web3, AR/VR, quantum computing, and beyond. Sharing knowledge through this blog.',
     icon: Globe,
@@ -42,9 +40,9 @@ const skills = [
   { name: 'React & Next.js', level: 95, color: 'from-blue-500 to-cyan-500' },
   { name: 'TypeScript', level: 90, color: 'from-blue-600 to-indigo-600' },
   { name: 'Node.js & Backend', level: 85, color: 'from-green-500 to-emerald-500' },
-  { name: 'AI & Machine Learning', level: 75, color: 'from-purple-500 to-pink-500' },
-  { name: 'Cloud & DevOps', level: 80, color: 'from-cyan-500 to-blue-500' },
-  { name: 'Web3 & Blockchain', level: 70, color: 'from-orange-500 to-yellow-500' }
+  // { name: 'AI & Machine Learning', level: 75, color: 'from-purple-500 to-pink-500' },
+//   { name: 'Cloud & DevOps', level: 80, color: 'from-cyan-500 to-blue-500' },
+//   { name: 'Web3 & Blockchain', level: 70, color: 'from-orange-500 to-yellow-500' }
 ];
 
 export default function AboutPage() {
@@ -98,12 +96,12 @@ export default function AboutPage() {
           {/* Journey Timeline */}
           <section className="mb-20">
             <h2 className="text-3xl font-bold text-center mb-16 gradient-text">
-              My Tech Journey
+              My Journey
             </h2>
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-4xl mx-auto">
               <div className="relative">
                 {/* Timeline Line */}
-                <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 via-purple-400 to-pink-400" />
+                <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-400 to-blue-500" />
                 
                 {/* Milestones */}
                 <div className="space-y-12">
@@ -166,6 +164,16 @@ export default function AboutPage() {
             </div>
           </section>
 
+          {/* Recent Blog Posts */}
+          <section className="mb-20">
+            <h2 className="text-3xl font-bold text-center mb-16 gradient-text">
+              Recent Articles
+            </h2>
+            <div className="max-w-6xl mx-auto">
+              <RecentBlogPosts />
+            </div>
+          </section>
+
           {/* Philosophy Section */}
           <section className="text-center">
             <div className="max-w-3xl mx-auto">
@@ -200,6 +208,80 @@ export default function AboutPage() {
           />
         ))}
       </div>
+    </div>
+  );
+}
+
+function RecentBlogPosts() {
+  const { posts, loading, error } = useBlogs({ published: true, limit: 3 });
+
+  if (loading) {
+    return (
+      <div className="text-center py-12">
+        <div className="w-8 h-8 border-2 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-gray-400">Loading recent articles...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-400">Unable to load recent articles</p>
+      </div>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <BookOpen className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+        <p className="text-gray-400">No articles published yet</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {posts.map((post) => (
+        <article
+          key={post.id}
+          className="group bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden hover:border-cyan-400/50 transition-all duration-500 hover:transform hover:scale-[1.02]"
+        >
+          <div className="p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="px-3 py-1 bg-cyan-400/10 text-cyan-400 text-sm font-mono rounded-full border border-cyan-400/30">
+                {post.category}
+              </span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-400 transition-all duration-300 line-clamp-2">
+              {post.title}
+            </h3>
+            <p className="text-gray-300 text-sm leading-relaxed mb-4 line-clamp-3">
+              {post.excerpt}
+            </p>
+            <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
+              <div className="flex items-center gap-1">
+                <Calendar className="w-3 h-3" />
+                {new Date(post.created_at).toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  day: 'numeric' 
+                })}
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                {Math.ceil(post.content.split(' ').length / 200)} min read
+              </div>
+            </div>
+            <Link
+              href={`/blog/${post.slug}`}
+              className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-semibold text-sm group-hover:gap-3 transition-all duration-300"
+            >
+              Read More <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </article>
+      ))}
     </div>
   );
 }

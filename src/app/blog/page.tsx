@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, Clock, Tag, Search, Filter } from 'lucide-react';
+import { Calendar, Clock, Tag, Search, Filter, Eye } from 'lucide-react';
+import { useBlogs } from '@/hooks/useBlogs';
 
 interface BlogPost {
   id: string;
@@ -16,75 +17,17 @@ interface BlogPost {
   featured?: boolean;
 }
 
-const blogPosts: BlogPost[] = [
-  {
-    id: 'nextjs-15-features',
-    title: 'Next.js 15: What\'s New and Breaking Changes',
-    excerpt: 'Explore the latest features, performance improvements, and breaking changes in Next.js 15. Learn about the new app router improvements, enhanced performance, and developer experience upgrades.',
-    category: 'React & Next.js',
-    tags: ['Next.js', 'React', 'Performance', 'App Router'],
-    date: '2024-12-15',
-    readTime: '8 min read',
-    author: 'Omee',
-    featured: true
-  },
-  {
-    id: 'ai-react-integration',
-    title: 'Building AI-Powered Applications with React',
-    excerpt: 'Learn how to integrate AI capabilities into your React applications using modern APIs. From simple text generation to complex image analysis, discover the power of AI in web development.',
-    category: 'Artificial Intelligence',
-    tags: ['AI', 'React', 'OpenAI', 'Machine Learning'],
-    date: '2024-12-10',
-    readTime: '12 min read',
-    author: 'Omee'
-  },
-  {
-    id: 'cloud-architecture-patterns',
-    title: 'Advanced Cloud Architecture Patterns',
-    excerpt: 'Discover scalable cloud architecture patterns for modern web applications. Learn about microservices, serverless architectures, and best practices for building resilient systems.',
-    category: 'Cloud & DevOps',
-    tags: ['Cloud', 'Architecture', 'Microservices', 'AWS'],
-    date: '2024-12-05',
-    readTime: '15 min read',
-    author: 'Omee'
-  },
-  {
-    id: 'web3-development-guide',
-    title: 'Web3 Development: From Zero to Hero',
-    excerpt: 'Complete guide to building decentralized applications with modern Web3 technologies. Learn about smart contracts, blockchain integration, and building the future of the web.',
-    category: 'Emerging Tech',
-    tags: ['Web3', 'Blockchain', 'Smart Contracts', 'Ethereum'],
-    date: '2024-11-28',
-    readTime: '20 min read',
-    author: 'Omee'
-  },
-  {
-    id: 'typescript-advanced-features',
-    title: 'TypeScript 5.0: Advanced Features Deep Dive',
-    excerpt: 'Master the latest TypeScript features and advanced type system concepts. Explore decorators, mapped types, conditional types, and more advanced patterns.',
-    category: 'Developer Tools',
-    tags: ['TypeScript', 'Advanced', 'Types', 'Decorators'],
-    date: '2024-11-20',
-    readTime: '18 min read',
-    author: 'Omee'
-  },
-  {
-    id: 'react-server-components',
-    title: 'React Server Components: The Future of React',
-    excerpt: 'Understanding React Server Components and their impact on modern web development. Learn how to leverage server-side rendering for better performance and SEO.',
-    category: 'React & Next.js',
-    tags: ['React', 'Server Components', 'SSR', 'Performance'],
-    date: '2024-11-15',
-    readTime: '14 min read',
-    author: 'Omee'
-  }
-];
-
 const categories = ['All', 'React & Next.js', 'Artificial Intelligence', 'Cloud & DevOps', 'Emerging Tech', 'Developer Tools'];
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Fetch published blog posts
+  const { posts: blogPosts, loading, error } = useBlogs({ published: true });
+
+  // Debug logging
+  console.log('Blog page debug:', { blogPosts, loading, error, count: blogPosts?.length });
 
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
@@ -137,23 +80,65 @@ export default function BlogPage() {
 
             {/* Category Filters */}
             <div className="flex flex-wrap gap-3 justify-center">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`
-                    px-4 py-2 rounded-lg font-medium transition-all duration-300
-                    ${selectedCategory === category
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25'
-                      : 'text-gray-400 hover:text-white hover:bg-gray-800/50 border border-gray-600/50 hover:border-cyan-400/50'
-                    }
-                  `}
-                >
-                  {category}
-                </button>
-              ))}
+              {categories.map((category) => {
+                if (category === 'All') {
+                  return (
+                    <button
+                      key={category}
+                      onClick={() => setSelectedCategory(category)}
+                      className={`
+                        px-4 py-2 rounded-lg font-medium transition-all duration-300
+                        ${selectedCategory === category
+                          ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25'
+                          : 'text-gray-400 hover:text-white hover:bg-gray-800/50 border border-gray-600/50 hover:border-cyan-400/50'
+                        }
+                      `}
+                    >
+                      {category}
+                    </button>
+                  );
+                }
+                
+                // Convert category name to URL slug
+                const categorySlug = category.toLowerCase()
+                  .replace(/[^a-z0-9]+/g, '-')
+                  .replace(/^-+|-+$/g, '');
+                
+                return (
+                  <Link
+                    key={category}
+                    href={`/category/${categorySlug}`}
+                    className="px-4 py-2 rounded-lg font-medium transition-all duration-300 text-gray-400 hover:text-white hover:bg-gray-800/50 border border-gray-600/50 hover:border-cyan-400/50"
+                  >
+                    {category}
+                  </Link>
+                );
+              })}
             </div>
           </div>
+
+          {/* Loading State */}
+          {loading && (
+            <div className="text-center py-16">
+              <div className="w-8 h-8 border-2 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin mx-auto mb-4" />
+              <p className="text-gray-400">Loading articles...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div className="text-center py-16">
+              <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-6 max-w-md mx-auto">
+                <p className="text-red-400 mb-4">Failed to load articles: {error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="px-4 py-2 bg-red-500/20 border border-red-500/30 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
+                >
+                  Try Again
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Featured Post */}
           {filteredPosts.find(post => post.featured) && (
@@ -164,7 +149,7 @@ export default function BlogPage() {
               {filteredPosts.filter(post => post.featured).map((post) => (
                 <div
                   key={post.id}
-                  className="group bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 hover:border-cyan-400/50 transition-all duration-500 hover:transform hover:scale-[1.02]"
+                  className="group bg-gray-900/50 backdrop-blur-sm border mb-2 border-gray-700/50 rounded-2xl p-8 hover:border-cyan-400/50 transition-all duration-500 hover:transform hover:scale-[1.02]"
                 >
                   <div className="flex items-start gap-6">
                     <div className="flex-1">
@@ -185,7 +170,7 @@ export default function BlogPage() {
                       <div className="flex items-center gap-4 text-sm text-gray-400 mb-6">
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4" />
-                          {new Date(post.date).toLocaleDateString('en-US', { 
+                          {new Date(post.created_at).toLocaleDateString('en-US', { 
                             year: 'numeric', 
                             month: 'long', 
                             day: 'numeric' 
@@ -193,11 +178,11 @@ export default function BlogPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Clock className="w-4 h-4" />
-                          {post.readTime}
+                          {Math.ceil(post.content.split(' ').length / 200)} min read
                         </div>
                         <div className="flex items-center gap-2">
                           <Tag className="w-4 h-4" />
-                          {post.author}
+                          Omee
                         </div>
                       </div>
                       <div className="flex flex-wrap gap-2 mb-6">
@@ -211,7 +196,7 @@ export default function BlogPage() {
                         ))}
                       </div>
                       <Link
-                        href={`/blog/${post.id}`}
+                        href={`/blog/${post.slug}`}
                         className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105"
                       >
                         Read Full Article
@@ -249,14 +234,14 @@ export default function BlogPage() {
                     <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        {new Date(post.date).toLocaleDateString('en-US', { 
+                        {new Date(post.created_at).toLocaleDateString('en-US', { 
                           month: 'short', 
                           day: 'numeric' 
                         })}
                       </div>
                       <div className="flex items-center gap-1">
                         <Clock className="w-3 h-3" />
-                        {post.readTime}
+                        {Math.ceil(post.content.split(' ').length / 200)} min read
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2 mb-4">
@@ -270,7 +255,7 @@ export default function BlogPage() {
                       ))}
                     </div>
                     <Link
-                      href={`/blog/${post.id}`}
+                      href={`/blog/${post.slug}`}
                       className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-semibold text-sm group-hover:gap-3 transition-all duration-300"
                     >
                       Read More →
