@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AlertTriangle, CheckCircle, ExternalLink } from 'lucide-react';
+import { AlertTriangle, ExternalLink } from 'lucide-react';
 
 export function EnvironmentCheck() {
   const [isConfigured, setIsConfigured] = useState<boolean | null>(null);
@@ -30,7 +30,7 @@ export function EnvironmentCheck() {
               Supabase Not Configured
             </h3>
             <p className="text-xs text-red-300 mb-3">
-              Your blog features won't work without proper configuration.
+              Your blog features won&apos;t work without proper configuration.
             </p>
             
             {showDetails && (

@@ -2,20 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, Clock, Tag, Search, Filter, Eye } from 'lucide-react';
+import { Calendar, Clock, Search, Tag } from 'lucide-react';
 import { useBlogs } from '@/hooks/useBlogs';
 
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  tags: string[];
-  date: string;
-  readTime: string;
-  author: string;
-  featured?: boolean;
-}
+
 
 const categories = ['All', 'React & Next.js', 'Artificial Intelligence', 'Cloud & DevOps', 'Emerging Tech', 'Developer Tools'];
 

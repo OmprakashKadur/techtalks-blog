@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { Calendar, Clock, Tag, ArrowLeft, Share2, BookOpen } from 'lucide-react';
@@ -24,7 +24,6 @@ interface BlogPost {
 
 export default function BlogPostPage() {
   const params = useParams();
-  const router = useRouter();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,9 +51,9 @@ export default function BlogPostPage() {
         } else {
           setPost(data);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Error fetching post:', err);
-        setError(err.message || 'Failed to fetch post');
+        setError(err instanceof Error ? err.message : 'Failed to fetch post');
       } finally {
         setLoading(false);
       }
@@ -83,7 +82,7 @@ export default function BlogPostPage() {
           <BookOpen className="w-16 h-16 text-gray-600 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-white mb-4">Post Not Found</h1>
           <p className="text-gray-400 mb-6">
-            The blog post you're looking for doesn't exist.
+            The blog post you&apos;re looking for doesn&apos;t exist.
           </p>
           <Link
             href="/blog"

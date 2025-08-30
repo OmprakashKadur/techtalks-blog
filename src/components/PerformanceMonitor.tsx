@@ -2,6 +2,23 @@
 
 import { useEffect } from 'react';
 
+interface LayoutShiftEntry extends PerformanceEntry {
+  value: number;
+  hadRecentInput: boolean;
+}
+
+interface ResourceEntry extends PerformanceEntry {
+  initiatorType: string;
+  duration: number;
+  name: string;
+}
+
+interface MemoryInfo {
+  usedJSHeapSize: number;
+  totalJSHeapSize: number;
+  jsHeapSizeLimit: number;
+}
+
 export function PerformanceMonitor() {
   useEffect(() => {
     // Only run in production and when web vitals are available
@@ -30,9 +47,10 @@ export function PerformanceMonitor() {
             const fidObserver = new PerformanceObserver((list) => {
               const entries = list.getEntries();
               entries.forEach((entry) => {
-                console.log('FID:', entry.processingStart - entry.startTime);
+                const fidEntry = entry as PerformanceEntry & { processingStart: number };
+                console.log('FID:', fidEntry.processingStart - entry.startTime);
                 // Send to analytics service
-                // analytics.track('web_vital', { name: 'FID', value: entry.processingStart - entry.startTime });
+                // analytics.track('web_vital', { name: 'FID', value: fidEntry.processingStart - entry.startTime });
               });
             });
             fidObserver.observe({ entryTypes: ['first-input'] });
@@ -45,9 +63,10 @@ export function PerformanceMonitor() {
             let clsValue = 0;
             const clsObserver = new PerformanceObserver((list) => {
               const entries = list.getEntries();
-              entries.forEach((entry: any) => {
-                if (!entry.hadRecentInput) {
-                  clsValue += entry.value;
+              entries.forEach((entry) => {
+                const layoutEntry = entry as LayoutShiftEntry;
+                if (!layoutEntry.hadRecentInput) {
+                  clsValue += layoutEntry.value;
                 }
               });
               console.log('CLS:', clsValue);
@@ -70,9 +89,9 @@ export function PerformanceMonitor() {
               ttfb: navigation.responseStart - navigation.requestStart,
               domLoad: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
               windowLoad: navigation.loadEventEnd - navigation.loadEventStart,
-              total: navigation.loadEventEnd - navigation.navigationStart,
+              total: navigation.loadEventEnd - navigation.fetchStart,
             };
-            
+
             console.log('Navigation Metrics:', metrics);
             // Send to analytics service
             // analytics.track('navigation_metrics', metrics);
@@ -84,12 +103,13 @@ export function PerformanceMonitor() {
           try {
             const resourceObserver = new PerformanceObserver((list) => {
               const entries = list.getEntries();
-              entries.forEach((entry: any) => {
-                if (entry.initiatorType === 'img' || entry.initiatorType === 'script' || entry.initiatorType === 'css') {
-                  console.log(`${entry.initiatorType} load time:`, entry.duration);
+              entries.forEach((entry) => {
+                const resourceEntry = entry as ResourceEntry;
+                if (resourceEntry.initiatorType === 'img' || resourceEntry.initiatorType === 'script' || resourceEntry.initiatorType === 'css') {
+                  console.log(`${resourceEntry.initiatorType} load time:`, resourceEntry.duration);
                   // Track slow resources
-                  if (entry.duration > 1000) {
-                    console.warn('Slow resource detected:', entry.name, entry.duration);
+                  if (resourceEntry.duration > 1000) {
+                    console.warn('Slow resource detected:', resourceEntry.name, resourceEntry.duration);
                   }
                 }
               });
@@ -110,7 +130,6 @@ export function PerformanceMonitor() {
 
       // Track page visibility changes for performance insights
       let hiddenTime = 0;
-      let startTime = Date.now();
 
       const handleVisibilityChange = () => {
         if (document.hidden) {
@@ -127,12 +146,12 @@ export function PerformanceMonitor() {
 
       // Track memory usage (if available)
       if ('memory' in performance) {
-        const memory = (performance as any).memory;
+        const memory = (performance as Performance & { memory: MemoryInfo }).memory;
         setInterval(() => {
           const used = Math.round(memory.usedJSHeapSize / 1048576);
           const total = Math.round(memory.totalJSHeapSize / 1048576);
           const limit = Math.round(memory.jsHeapSizeLimit / 1048576);
-          
+
           if (used > total * 0.8) {
             console.warn('High memory usage:', `${used}MB / ${total}MB (${limit}MB limit)`);
           }

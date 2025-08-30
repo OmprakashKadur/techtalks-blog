@@ -28,12 +28,7 @@ export function useBlogs(options: {
   const [error, setError] = useState<string | null>(null);
 
   // Memoize options to prevent unnecessary re-renders
-  const memoizedOptions = useMemo(() => options, [
-    options.published,
-    options.featured,
-    options.category,
-    options.limit
-  ]);
+  const memoizedOptions = useMemo(() => options, [options]);
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -68,9 +63,9 @@ export function useBlogs(options: {
       }
 
       setPosts(data || []);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error fetching posts:', err);
-      setError(err.message || 'Failed to fetch posts');
+      setError(err instanceof Error ? err.message : 'Failed to fetch posts');
     } finally {
       setLoading(false);
     }

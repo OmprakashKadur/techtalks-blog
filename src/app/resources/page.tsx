@@ -1,4 +1,4 @@
-import { ExternalLink, Github, BookOpen, Code, Zap, Database, Cloud, Globe, Bookmark } from 'lucide-react';
+import { ExternalLink, BookOpen, Code, Zap, Bookmark, Globe } from 'lucide-react';
 
 interface Resource {
   id: string;
@@ -282,7 +282,7 @@ export default function ResourcesPage() {
                 Have a Resource to Share?
               </h3>
               <p className="text-gray-300 mb-6">
-                Found an amazing tool or resource? Let me know and I'll add it to the collection!
+                Found an amazing tool or resource? Let me know and I&apos;ll add it to the collection!
               </p>
               <a
                 href="mailto:omee@techtalks.dev"

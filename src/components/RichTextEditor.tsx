@@ -33,7 +33,8 @@ import {
   Underline as UnderlineIcon,
   Strikethrough,
   Minus,
-  SeparatorHorizontal
+  SeparatorHorizontal,
+  Sparkles
 } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -152,7 +153,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
         {/* Main Toolbar Row */}
         <div className="flex flex-wrap items-center gap-1 p-2 border-b border-gray-600/50">
           {/* Text Formatting */}
-          <MenuGroup title="Text Formatting">
+          <MenuGroup>
             <button
               onClick={() => editor.chain().focus().toggleBold().run()}
               className={`p-2 rounded transition-colors ${
@@ -160,7 +161,6 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Bold (Ctrl+B)"
             >
               <Bold className="w-4 h-4" />
             </button>
@@ -172,7 +172,6 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Italic (Ctrl+I)"
             >
               <Italic className="w-4 h-4" />
             </button>
@@ -184,7 +183,6 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Underline (Ctrl+U)"
             >
               <UnderlineIcon className="w-4 h-4" />
             </button>
@@ -196,7 +194,6 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Strikethrough"
             >
               <Strikethrough className="w-4 h-4" />
             </button>
@@ -205,7 +202,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
           <MenuDivider />
 
           {/* Headings */}
-          <MenuGroup title="Headings">
+          <MenuGroup>
             <button
               onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
               className={`p-2 rounded transition-colors ${
@@ -213,7 +210,6 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Heading 1"
             >
               <Heading1 className="w-4 h-4" />
             </button>
@@ -225,7 +221,6 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Heading 2"
             >
               <Heading2 className="w-4 h-4" />
             </button>
@@ -237,7 +232,6 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Heading 3"
             >
               <Heading3 className="w-4 h-4" />
             </button>
@@ -246,7 +240,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
           <MenuDivider />
 
           {/* Lists */}
-          <MenuGroup title="Lists">
+          <MenuGroup>
             <button
               onClick={() => editor.chain().focus().toggleBulletList().run()}
               className={`p-2 rounded transition-colors ${
@@ -254,11 +248,10 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Bullet List"
             >
               <List className="w-4 h-4" />
             </button>
-
+            
             <button
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
               className={`p-2 rounded transition-colors ${
@@ -266,7 +259,6 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Numbered List"
             >
               <ListOrdered className="w-4 h-4" />
             </button>
@@ -275,19 +267,18 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
           <MenuDivider />
 
           {/* Block Elements */}
-          <MenuGroup title="Block Elements">
+          <MenuGroup>
             <button
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
               className={`p-2 rounded transition-colors ${
                 editor.isActive('blockquote') 
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
-                  : 'text-gray-400 hover:text-white hover:bg-gray-600/50'
+                  : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Quote"
             >
               <Quote className="w-4 h-4" />
             </button>
-
+            
             <button
               onClick={() => editor.chain().focus().toggleCodeBlock().run()}
               className={`p-2 rounded transition-colors ${
@@ -295,15 +286,13 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Code Block"
             >
               <Code className="w-4 h-4" />
             </button>
-
+            
             <button
               onClick={() => editor.chain().focus().setHorizontalRule().run()}
-              className="p-2 text-gray-300 hover:text-white hover:bg-gray-600/50 rounded transition-colors"
-              title="Horizontal Rule"
+              className="p-2 rounded transition-colors text-gray-300 hover:text-white hover:bg-gray-600/50"
             >
               <SeparatorHorizontal className="w-4 h-4" />
             </button>
@@ -312,7 +301,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
           <MenuDivider />
 
           {/* Media & Links */}
-          <MenuGroup title="Media & Links">
+          <MenuGroup>
             <button
               onClick={addLink}
               className={`p-2 rounded transition-colors ${
@@ -320,15 +309,13 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Add Link"
             >
               <LinkIcon className="w-4 h-4" />
             </button>
-
+            
             <button
               onClick={addImage}
-              className="p-2 text-gray-300 hover:text-white hover:bg-gray-600/50 rounded transition-colors"
-              title="Add Image"
+              className="p-2 rounded transition-colors text-gray-300 hover:text-white hover:bg-gray-600/50"
             >
               <ImageIcon className="w-4 h-4" />
             </button>
@@ -337,7 +324,7 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
           <MenuDivider />
 
           {/* Text Alignment */}
-          <MenuGroup title="Text Alignment">
+          <MenuGroup>
             <button
               onClick={() => editor.chain().focus().setTextAlign('left').run()}
               className={`p-2 rounded transition-colors ${
@@ -345,11 +332,10 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Align Left"
             >
               <AlignLeft className="w-4 h-4" />
             </button>
-
+            
             <button
               onClick={() => editor.chain().focus().setTextAlign('center').run()}
               className={`p-2 rounded transition-colors ${
@@ -357,11 +343,10 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Align Center"
             >
               <AlignCenter className="w-4 h-4" />
             </button>
-
+            
             <button
               onClick={() => editor.chain().focus().setTextAlign('right').run()}
               className={`p-2 rounded transition-colors ${
@@ -369,11 +354,10 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Align Right"
             >
               <AlignRight className="w-4 h-4" />
             </button>
-
+            
             <button
               onClick={() => editor.chain().focus().setTextAlign('justify').run()}
               className={`p-2 rounded transition-colors ${
@@ -381,9 +365,45 @@ export function RichTextEditor({ value, onChange, placeholder }: RichTextEditorP
                   ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
                   : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
               }`}
-              title="Justify"
             >
               <AlignJustify className="w-4 h-4" />
+            </button>
+          </MenuGroup>
+
+          <MenuDivider />
+
+          {/* History */}
+          <MenuGroup>
+            <button
+              onClick={() => editor.chain().focus().undo().run()}
+              disabled={!editor.can().undo()}
+              className="p-2 rounded transition-colors text-gray-300 hover:text-white hover:bg-gray-600/50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Undo className="w-4 h-4" />
+            </button>
+            
+            <button
+              onClick={() => editor.chain().focus().redo().run()}
+              disabled={!editor.can().redo()}
+              className="p-2 rounded transition-colors text-gray-300 hover:text-white hover:bg-gray-600/50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Redo className="w-4 h-4" />
+            </button>
+          </MenuGroup>
+
+          <MenuDivider />
+
+          {/* Special Formatting */}
+          <MenuGroup>
+            <button
+              onClick={() => editor.chain().focus().toggleHighlight().run()}
+              className={`p-2 rounded transition-colors ${
+                editor.isActive('highlight') 
+                  ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30' 
+                  : 'text-gray-300 hover:text-white hover:bg-gray-600/50'
+              }`}
+            >
+              <Sparkles className="w-4 h-4" />
             </button>
           </MenuGroup>
         </div>

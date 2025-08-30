@@ -1,4 +1,4 @@
-import { ExternalLink, Github, Globe, Code, Zap, Database, Cloud } from 'lucide-react';
+import { ExternalLink, Github, Code, Zap } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -259,14 +259,14 @@ export default function ProjectsPage() {
                 Have a Project Idea?
               </h3>
               <p className="text-gray-300 mb-6">
-                I'm always interested in collaborating on interesting projects. Let's build something amazing together!
+                I&apos;m always interested in collaborating on interesting projects. Let&apos;s build something amazing together!
               </p>
               <a
                 href="/contact"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105"
               >
                 <Zap className="w-5 h-5" />
-                Let's Collaborate
+                Let&apos;s Collaborate
               </a>
             </div>
           </div>

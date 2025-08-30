@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
-import { Calendar, Clock, Tag, ArrowLeft, Search } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Search } from 'lucide-react';
 
 interface BlogPost {
   id: string;
@@ -24,7 +24,6 @@ interface BlogPost {
 
 export default function CategoryPage() {
   const params = useParams();
-  const router = useRouter();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,9 +61,9 @@ export default function CategoryPage() {
         }
 
         setPosts(data || []);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Error fetching category posts:', err);
-        setError(err.message || 'Failed to fetch posts');
+        setError(err instanceof Error ? err.message : 'Failed to fetch posts');
       } finally {
         setLoading(false);
       }

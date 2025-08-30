@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Calendar, Clock, Tag, ArrowLeft, Share2, Bookmark, User } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Share2, Bookmark, User } from 'lucide-react';
 
 export default function Web3DevelopmentGuidePage() {
   return (

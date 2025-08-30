@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { LoginModal } from './LoginModal';
-import { Menu, X, Home, User, BookOpen, Briefcase, Bookmark, Mail, LogIn, LogOut, Settings } from 'lucide-react';
+import { Menu, X, Home, User, BookOpen, LogIn, LogOut, Settings } from 'lucide-react';
 
 const navigationItems = [
   { name: 'Home', href: '/', icon: Home },

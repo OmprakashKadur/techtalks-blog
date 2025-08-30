@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
@@ -15,8 +14,7 @@ import {
   Clock, 
   Tag,
   BookOpen,
-  Search,
-  Filter
+  Search
 } from 'lucide-react';
 
 interface BlogPost {
@@ -34,7 +32,6 @@ interface BlogPost {
 }
 
 export default function AdminBlogPage() {
-  const router = useRouter();
   const { user } = useAuth();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,14 +54,7 @@ export default function AdminBlogPage() {
     { value: 'draft', label: 'Drafts' }
   ];
 
-  useEffect(() => {
-    if (user) {
-      setError(null);
-      loadPosts();
-    }
-  }, [user]);
-
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     try {
       // Check if Supabase is properly configured
       if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -83,19 +73,28 @@ export default function AdminBlogPage() {
       }
       
       setPosts(data || []);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error loading posts:', error);
-      console.error('Error details:', {
-        message: error.message,
-        code: error.code,
-        details: error.details,
-        hint: error.hint
-      });
-      setError(error.message || 'Failed to load posts');
+      if (error instanceof Error) {
+        console.error('Error details:', {
+          message: error.message,
+          name: error.name
+        });
+        setError(error.message || 'Failed to load posts');
+      } else {
+        setError('Failed to load posts');
+      }
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      setError(null);
+      loadPosts();
+    }
+  }, [user, loadPosts]);
 
   const deletePost = async (postId: string) => {
     if (!confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
@@ -112,7 +111,7 @@ export default function AdminBlogPage() {
       
       // Remove from local state
       setPosts(prev => prev.filter(post => post.id !== postId));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error deleting post:', error);
     }
   };
@@ -136,7 +135,7 @@ export default function AdminBlogPage() {
           ? { ...post, published: !currentPublished, published_at: !currentPublished ? new Date().toISOString() : null }
           : post
       ));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating post:', error);
     }
   };
@@ -159,7 +158,7 @@ export default function AdminBlogPage() {
           ? { ...post, featured: !currentFeatured }
           : post
       ));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error updating post:', error);
     }
   };

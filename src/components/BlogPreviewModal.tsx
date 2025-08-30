@@ -1,6 +1,6 @@
 'use client';
 
-import { X, ExternalLink, Smartphone, Monitor, Tablet } from 'lucide-react';
+import { X, Smartphone, Monitor, Tablet } from 'lucide-react';
 import { useState } from 'react';
 
 interface BlogPreviewModalProps {

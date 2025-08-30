@@ -215,7 +215,7 @@ export default function NewsletterPage() {
               <div className="order-1 lg:order-2">
                 {/* Benefits */}
                 <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-white mb-6">What You'll Get</h3>
+                  <h3 className="text-2xl font-bold text-white mb-6">What You&apos;ll Get</h3>
                   <div className="space-y-4">
                     {benefits.map((benefit, index) => {
                       const Icon = benefit.icon;

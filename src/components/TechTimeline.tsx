@@ -115,7 +115,7 @@ export function TechTimeline() {
         
         {/* Posts */}
         <div className="space-y-8">
-          {postsForYear.map((post, index) => (
+          {postsForYear.map((post) => (
             <div key={post.id} className="relative group">
               {/* Timeline Dot */}
               <div className="absolute left-6 top-6 w-4 h-4 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full border-4 border-black shadow-lg group-hover:scale-125 transition-transform duration-300" />

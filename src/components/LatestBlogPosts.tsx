@@ -1,11 +1,21 @@
 'use client';
 
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import Link from 'next/link';
 import { useBlogs } from '@/hooks/useBlogs';
-import { Calendar, Clock, User, ArrowRight, BookOpen } from 'lucide-react';
+import { Calendar, User, ArrowRight, BookOpen } from 'lucide-react';
 
-const BlogPostCard = memo(({ post }: { post: any }) => (
+interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: string;
+  tags?: string[];
+  created_at: string;
+}
+
+const BlogPostCard = memo(({ post }: { post: BlogPost }) => (
   <article className="group bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 hover:border-cyan-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-400/10">
     {/* Category Badge */}
     <div className="mb-4">

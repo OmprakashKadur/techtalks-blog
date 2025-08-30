@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, Sparkles, Command } from 'lucide-react';
+import { Sparkles, Command } from 'lucide-react';
 
 interface SearchResult {
   id: string;

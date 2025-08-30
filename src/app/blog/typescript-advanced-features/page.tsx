@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Calendar, Clock, Tag, ArrowLeft, Share2, Bookmark, User } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Share2, Bookmark, User } from 'lucide-react';
 
 export default function TypeScriptAdvancedFeaturesPage() {
   return (
@@ -97,7 +97,7 @@ export default function TypeScriptAdvancedFeaturesPage() {
                   </h2>
                   
                   <p className="text-lg text-gray-300 leading-8">
-                    TypeScript 5.0 introduces several powerful features that make the type system more expressive and flexible. Let's explore these advanced concepts and see how they can improve your code quality and developer experience.
+                    TypeScript 5.0 introduces several powerful features that make the type system more expressive and flexible. Let&apos;s explore these advanced concepts and see how they can improve your code quality and developer experience.
                   </p>
                 </div>
 
@@ -108,7 +108,7 @@ export default function TypeScriptAdvancedFeaturesPage() {
                       Decorators (Stage 3)
                     </h3>
                     <p className="text-lg text-gray-300 leading-8 mb-6">
-                      Decorators are a powerful way to add metadata and modify classes, methods, and properties at design time. They're particularly useful for frameworks like Angular, NestJS, and custom libraries.
+                      Decorators are a powerful way to add metadata and modify classes, methods, and properties at design time. They&apos;re particularly useful for frameworks like Angular, NestJS, and custom libraries.
                     </p>
 
                     <div className="space-y-4 mb-6">
@@ -159,7 +159,7 @@ const pers = new Person();`}
                       Mapped Types
                     </h3>
                     <p className="text-lg text-gray-300 leading-8 mb-6">
-                      Mapped types allow you to create new types by transforming existing ones. They're incredibly powerful for creating utility types and generic interfaces that can adapt to different data structures.
+                      Mapped types allow you to create new types by transforming existing ones. They&apos;re incredibly powerful for creating utility types and generic interfaces that can adapt to different data structures.
                     </p>
 
                     <div className="space-y-4 mb-6">
@@ -502,7 +502,7 @@ type Curried<T extends any[], R> = T extends [infer First, ...infer Rest]
                               <span className="text-green-400 text-lg mt-1">✓</span>
                               <div className="leading-7">
                                 <strong className="text-white">Test your types:</strong>
-                                <span className="block text-gray-300 mt-2">Use TypeScript's type checking to validate your type definitions and catch errors early.</span>
+                                <span className="block text-gray-300 mt-2">Use TypeScript&apos;s type checking to validate your type definitions and catch errors early.</span>
                               </div>
                             </li>
                             <li className="flex items-start gap-3">
@@ -526,7 +526,7 @@ type Curried<T extends any[], R> = T extends [infer First, ...infer Rest]
                       <div className="text-center mb-6">
                         <h4 className="text-2xl font-bold text-white mb-4">🚀 Ready to Level Up?</h4>
                         <p className="text-lg text-gray-300 leading-8 mb-6">
-                          TypeScript 5.0's advanced features provide powerful tools for creating robust, type-safe applications. By mastering these concepts, you can build more maintainable code and catch errors at compile time rather than runtime.
+                          TypeScript 5.0&apos;s advanced features provide powerful tools for creating robust, type-safe applications. By mastering these concepts, you can build more maintainable code and catch errors at compile time rather than runtime.
                         </p>
                         <div className="bg-gray-800/50 p-6 rounded-lg border border-gray-600/50">
                           <h5 className="text-lg font-semibold text-cyan-400 mb-3">Next Steps:</h5>

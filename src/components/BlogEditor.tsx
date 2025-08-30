@@ -7,12 +7,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { 
   Save, 
   Eye, 
-  EyeOff, 
-  Upload, 
   X, 
   Plus, 
-  Trash2,
-  Calendar,
   Tag,
   BookOpen,
   Sparkles
@@ -62,7 +58,6 @@ export function BlogEditor({ postId }: { postId?: string }) {
     published: false
   });
   
-  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [newTag, setNewTag] = useState('');
@@ -108,8 +103,8 @@ export function BlogEditor({ postId }: { postId?: string }) {
       if (data) {
         setPost(data);
       }
-    } catch (error: any) {
-      setError('Failed to load post: ' + error.message);
+    } catch (error: unknown) {
+      setError('Failed to load post: ' + (error instanceof Error ? error.message : 'Unknown error'));
     }
   };
 
@@ -168,8 +163,8 @@ export function BlogEditor({ postId }: { postId?: string }) {
           router.push('/admin/blog');
         }, 2000);
       }
-    } catch (error: any) {
-      setError('Failed to save post: ' + error.message);
+    } catch (error: unknown) {
+      setError('Failed to save post: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setSaving(false);
     }

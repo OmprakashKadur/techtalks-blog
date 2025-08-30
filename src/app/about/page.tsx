@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, Code, Rocket, Lightbulb, Globe, Zap, BookOpen, ArrowRight, Clock } from 'lucide-react';
+import { Calendar, Code, Rocket, Globe, Zap, BookOpen, ArrowRight, Clock } from 'lucide-react';
 import { useBlogs } from '@/hooks/useBlogs';
 import Link from 'next/link';
 
@@ -81,13 +81,13 @@ export default function AboutPage() {
               </h2>
               <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                  Hello! I'm Omee, a passionate technologist and lifelong learner who believes that technology has the power to transform our world for the better. My journey began with simple curiosity about how websites worked, and it has evolved into a deep exploration of emerging technologies that are shaping our future.
+                  Hello! I&apos;m Omee, a passionate technologist and lifelong learner who believes that technology has the power to transform our world for the better. My journey began with simple curiosity about how websites worked, and it has evolved into a deep exploration of emerging technologies that are shaping our future.
                 </p>
                 <p className="text-lg text-gray-300 leading-relaxed mb-6">
                   I believe in the power of sharing knowledge and building communities around technology. This blog is my way of contributing to the global conversation about where technology is heading and how we can harness it to solve real-world problems.
                 </p>
                 <p className="text-lg text-gray-300 leading-relaxed">
-                  When I'm not coding or exploring new technologies, you can find me experimenting with AI tools, contributing to open-source projects, or mentoring other developers who are just starting their journey.
+                  When I&apos;m not coding or exploring new technologies, you can find me experimenting with AI tools, contributing to open-source projects, or mentoring other developers who are just starting their journey.
                 </p>
               </div>
             </div>
@@ -105,7 +105,7 @@ export default function AboutPage() {
                 
                 {/* Milestones */}
                 <div className="space-y-12">
-                  {journeyMilestones.map((milestone, index) => {
+                  {journeyMilestones.map((milestone) => {
                     const Icon = milestone.icon;
                     return (
                       <div key={milestone.year} className="relative group">
@@ -182,7 +182,7 @@ export default function AboutPage() {
               </h2>
               <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8">
                 <p className="text-xl text-gray-300 leading-relaxed mb-6">
-                  "Technology should serve humanity, not the other way around. Every line of code we write, every system we build, should make the world a little better, a little more connected, and a little more accessible."
+                  &ldquo;Technology should serve humanity, not the other way around. Every line of code we write, every system we build, should make the world a little better, a little more connected, and a little more accessible.&rdquo;
                 </p>
                 <div className="text-cyan-400 font-mono text-lg">
                   — Omee

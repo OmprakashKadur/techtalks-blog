@@ -1,8 +1,6 @@
 import { memo } from 'react';
-import Link from 'next/link';
 import { CategoryCard } from '@/components/CategoryCard';
 import { SearchBar } from '@/components/SearchBar';
-import { TechTimeline } from '@/components/TechTimeline';
 import { LatestBlogPosts } from '@/components/LatestBlogPosts';
 
 const categories = [
