@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import { Navigation } from "@/components/Navigation";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { BlogProvider } from "@/contexts/BlogContext";
 import { EnvironmentCheck } from "@/components/EnvironmentCheck";
 import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 import "./globals.css";
@@ -66,12 +67,14 @@ export default function RootLayout({
         className={`${inter.variable} ${geistMono.variable} antialiased bg-black text-white overflow-x-hidden`}
       >
         <AuthProvider>
-          <Navigation />
-          <div className="pt-16">
-            {children}
-          </div>
-          <EnvironmentCheck />
+          <BlogProvider>
+            <Navigation />
+            <div className="pt-16">
+              {children}
+            </div>
+                      <EnvironmentCheck />
           <PerformanceMonitor />
+          </BlogProvider>
         </AuthProvider>
       </body>
     </html>

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/contexts/AuthContext';
+import type { BlogPost } from '@/contexts/BlogContext';
 import { 
   Plus, 
   Edit, 
@@ -16,20 +17,6 @@ import {
   BookOpen,
   Search
 } from 'lucide-react';
-
-interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  category: string;
-  tags: string[];
-  featured: boolean;
-  published: boolean;
-  created_at: string;
-  updated_at: string;
-  published_at: string | null;
-}
 
 export default function AdminBlogPage() {
   const { user } = useAuth();

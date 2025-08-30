@@ -2,7 +2,7 @@
 
 import { memo } from 'react';
 import Link from 'next/link';
-import { useBlogs } from '@/hooks/useBlogs';
+import { useBlogContext } from '@/contexts/BlogContext';
 import { Calendar, User, ArrowRight, BookOpen } from 'lucide-react';
 
 interface BlogPost {
@@ -101,10 +101,7 @@ const LoadingSkeleton = memo(() => (
 LoadingSkeleton.displayName = 'LoadingSkeleton';
 
 export const LatestBlogPosts = memo(function LatestBlogPosts() {
-  const { posts, loading, error } = useBlogs({ 
-    published: true, 
-    limit: 5 
-  });
+  const { latestPosts: posts, loading, error } = useBlogContext();
 
   if (loading) {
     return <LoadingSkeleton />;

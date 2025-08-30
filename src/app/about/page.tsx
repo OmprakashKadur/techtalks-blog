@@ -1,7 +1,7 @@
 'use client';
 
 import { Calendar, Code, Rocket, Globe, Zap, BookOpen, ArrowRight, Clock } from 'lucide-react';
-import { useBlogs } from '@/hooks/useBlogs';
+import { useBlogContext } from '@/contexts/BlogContext';
 import Link from 'next/link';
 
 const journeyMilestones = [
@@ -213,7 +213,7 @@ export default function AboutPage() {
 }
 
 function RecentBlogPosts() {
-  const { posts, loading, error } = useBlogs({ published: true, limit: 3 });
+  const { recentPosts: posts, loading, error } = useBlogContext();
 
   if (loading) {
     return (

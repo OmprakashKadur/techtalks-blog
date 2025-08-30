@@ -5,22 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { Calendar, Clock, ArrowLeft, Search } from 'lucide-react';
-
-interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  category: string;
-  tags: string[];
-  author_id: string;
-  featured: boolean;
-  published: boolean;
-  created_at: string;
-  updated_at: string;
-  published_at: string | null;
-}
+import type { BlogPost } from '@/contexts/BlogContext';
 
 export default function CategoryPage() {
   const params = useParams();
@@ -74,10 +59,10 @@ export default function CategoryPage() {
     }
   }, [params.slug]);
 
-  const filteredPosts = posts.filter(post => {
+  const filteredPosts = posts.filter((post: BlogPost) => {
     return post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
            post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-           post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+           post.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
   });
 
   const getCategoryDisplayName = (slug: string) => {

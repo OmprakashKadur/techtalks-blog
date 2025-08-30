@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Calendar, Clock, Search, Tag } from 'lucide-react';
-import { useBlogs } from '@/hooks/useBlogs';
+import { useBlogContext, type BlogPost } from '@/contexts/BlogContext';
 
 
 
@@ -14,16 +14,16 @@ export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch published blog posts
-  const { posts: blogPosts, loading, error } = useBlogs({ published: true });
+  const { allPosts: blogPosts, loading, error } = useBlogContext();
 
   // Debug logging
   console.log('Blog page debug:', { blogPosts, loading, error, count: blogPosts?.length });
 
-  const filteredPosts = blogPosts.filter(post => {
+  const filteredPosts = blogPosts.filter((post: BlogPost) => {
     const matchesCategory = selectedCategory === 'All' || post.category === selectedCategory;
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+                         post.tags.some((tag: string) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
@@ -136,7 +136,7 @@ export default function BlogPage() {
               <h2 className="text-2xl font-bold text-center mb-8 gradient-text">
                 Featured Article
               </h2>
-              {filteredPosts.filter(post => post.featured).map((post) => (
+              {filteredPosts.filter((post: BlogPost) => post.featured).map((post: BlogPost) => (
                 <div
                   key={post.id}
                   className="group bg-gray-900/50 backdrop-blur-sm border mb-2 border-gray-700/50 rounded-2xl p-8 hover:border-cyan-400/50 transition-all duration-500 hover:transform hover:scale-[1.02]"
@@ -204,7 +204,7 @@ export default function BlogPage() {
               {selectedCategory === 'All' ? 'All Articles' : `${selectedCategory} Articles`}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.filter(post => !post.featured).map((post) => (
+              {filteredPosts.filter((post: BlogPost) => !post.featured).map((post: BlogPost) => (
                 <article
                   key={post.id}
                   className="group bg-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden hover:border-cyan-400/50 transition-all duration-500 hover:transform hover:scale-[1.02]"
